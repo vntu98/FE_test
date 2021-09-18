@@ -1,0 +1,22 @@
+export default {
+    id: 1,
+    username: "ngan.nguyen",
+    status: 'active',
+    name: 'Ngan Nguyen',
+    role: 'admin',
+    email: 'ngan.nguyen@alliedtechbase.com',
+    company: 'Allied Tech Base',
+    birth_day: '1996-02-21',
+    language: 'english',
+    mobile: '0123456789',
+    gender: 'female',
+    website: 'https://ngannguyen.com',
+    contact: ['email', 'message'],
+    address_line_1: 'Ha Noi',
+    city: 'Ha Noi',
+    address_line_2: '',
+    state: '',
+    postcode: '',
+    country: '',
+    avatar: 'https://meslab.vn/wp-content/uploads/2019/08/istockphoto-476085198-612x612.jpg'
+}

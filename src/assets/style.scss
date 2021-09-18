@@ -1,0 +1,533 @@
+$container: 1250px;
+$primary-color: #7366f0;
+$gray-color: #eaebec;
+$while-color: #ffffff;
+$primary-font: "Roboto", sans-serif;
+
+@mixin absolute-center($axis: "both", $start: none, $distance: 0) {
+  position: absolute;
+  @if $start != none {
+    #{$start}: $distance;
+  }
+  @if $axis == x {
+    left: 50%;
+    transform: translateX(-50%);
+  } @else if $axis == y {
+    top: 50%;
+    transform: translateY(-50%);
+  } @else {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+@mixin flex-box(
+  $align-items: center,
+  $justify-content: center,
+  $direction: row,
+  $wrap: nowrap,
+  $flex: flex
+) {
+  display: $flex;
+  align-items: $align-items;
+  justify-content: $justify-content;
+  flex-direction: $direction;
+  flex-wrap: $wrap;
+}
+@mixin size($width: 100%, $height: $width) {
+  width: $width;
+  height: $height;
+}
+@mixin max-width($breakpoint) {
+  @media screen and(max-width: $breakpoint) {
+    @content;
+  }
+}
+@mixin min-width($breakpoint) {
+  @media screen and(min-width: $breakpoint) {
+    @content;
+  }
+}
+%primary {
+  background: $primary-color;
+  color: $while-color;
+}
+%secondary {
+  border: 2px solid $gray-color;
+  background: $while-color;
+  color: $gray-color;
+}
+%is-click {
+  cursor: pointer;
+  font-size: 1.8rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s linear;
+}
+%size-input {
+  @include size(100%, 6rem);
+  padding: 0 2rem;
+  border: 2px solid $gray-color;
+  border-radius: 1rem;
+}
+%before-dropdown {
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2rem;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    transform: translateY(-100%);
+  }
+}
+%radio-checkbox {
+  @include size(2.5rem);
+  position: relative;
+  display: inline-block;
+  border: 2px solid $gray-color;
+  transition: all 0.2s linear;
+}
+%label {
+  @include absolute-center(y, left, 2rem);
+  font-size: 1.2rem;
+  text-transform: capitalize;
+  transform: translate(0, -2.8rem);
+}
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+  line-height: 1;
+  font-family: $primary-font;
+}
+select {
+  outline: none;
+}
+a {
+  text-decoration: none;
+}
+input,
+button {
+  border: none;
+  outline: none;
+}
+img {
+  object-fit: cover;
+}
+.container {
+  margin: 0 auto;
+  width: calc(100% - 2rem);
+  max-width: $container + 30px;
+  padding: 0 15px;
+  border-radius: 0.5rem;
+  background: $while-color;
+}
+.item-radio {
+  @include flex-box();
+  display: inline-flex;
+  &__input {
+    display: none;
+  }
+  &__input:checked + &__label {
+    background: $primary-color;
+    border-color: $primary-color;
+  }
+  &__label {
+    @extend %radio-checkbox;
+    margin-left: 2rem;
+    border-radius: 50%;
+  }
+  &__text {
+    padding-left: 1rem;
+    font-size: 1.8rem;
+    color: gray;
+  }
+}
+.radio__label,
+.checkbox__label {
+  @extend %label;
+}
+.group-checkbox{
+  display: flex
+}
+.item-checkbox {
+  @include flex-box(center, flex-start);
+  margin-right: 2rem;
+  &__input {
+    display: none;
+  }
+  &__input:checked ~ &__label {
+    background: $primary-color;
+    border-color: $primary-color;
+  }
+  &__label {
+    @extend %radio-checkbox;
+    border-radius: 0.5rem;
+    &::before {
+      content: "";
+      @include size(1rem, 2rem);
+      position: absolute;
+      display: block;
+      top: 38%;
+      left: 50%;
+      border: 0 solid white;
+      border-width: 0 2px 2px 0;
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+  }
+  &__text {
+    padding-left: 1rem;
+    font-size: 1.8rem;
+    color: gray;
+  }
+}
+
+.btn {
+  @extend %is-click;
+  height: 4rem;
+  margin-right: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  box-shadow: 0px 8px 0 0 #000000a3;
+  &:active {
+    box-shadow: none;
+    transform: translateY(8px);
+  }
+  &--primary {
+    @extend %primary;
+  }
+  &--secondary {
+    @extend %secondary;
+  }
+}
+
+body {
+  background: $gray-color;
+}
+.form {
+  &__item {
+    position: relative;
+    margin-bottom: 1.2rem;
+  }
+  &__item--checkbox {
+  }
+  &__input {
+    @extend %size-input;
+    font-size: 1.6rem;
+    box-shadow: inset 0 0 0 20rem $while-color;
+  }
+  &__input:focus ~ .form__label,
+  &__input:not(:placeholder-shown) ~ .form__label {
+    font-size: 1.4rem;
+    transform: translate(0, -2.4rem);
+  }
+  &__input::placeholder {
+    opacity: 0;
+  }
+  &__label {
+    @include absolute-center(y, left, 2rem);
+    font-size: 1.6rem;
+    text-transform: capitalize;
+    transition: all 0.2s linear;
+    cursor: text;
+  }
+}
+.dropdown {
+  .select {
+    text-transform: capitalize;
+  }
+  position: relative;
+  &.active .select__label{
+    font-size: 1.4rem;
+    transform: translate(0, -2.4rem);
+  }
+  .select__label {
+    @extend %label;
+    font-size: 1.8rem;
+    transform: translateY(-50%);
+  }
+  &-select {
+    @extend %size-input;
+    @include flex-box(center, space-between);
+    font-size: 2rem;
+    transition: all 0.2s linear;
+  }
+  &:hover &-select {
+    border-color: $primary-color;
+  }
+  &:hover &-list {
+    top: 100%;
+    visibility: visible;
+    opacity: 1;
+  }
+  &-list {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -2rem;
+    border-radius: 0.5rem;
+    box-shadow: 1px 3px 7px 0 black;
+    background: white;
+    font-size: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    z-index: 10;
+    transition: all 0.2s linear;
+    &__item {
+      @include flex-box(center, space-between);
+      @include size(auto, 5rem);
+      padding-left: 2rem;
+      padding-right: 2rem;
+      text-transform: capitalize;
+      cursor: pointer;
+      transition: all 0.2s linear;
+    }
+    &__item:hover {
+      background: #9086ed;
+    }
+    &__item.active {
+      background: $primary-color;
+    }
+    &__item.active &__icon {
+      opacity: 1;
+      visibility: visible;
+    }
+    &__icon {
+      font-size: 1rem;
+      color: $while-color;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s linear;
+    }
+  }
+}
+#login {
+  padding-top: 16rem;
+  .login {
+    @include size(100%, auto);
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 0 5rem 5rem;
+    border-radius: 1rem;
+    background: $while-color;
+    &__top {
+    }
+    &__logo {
+      @include size(100%, auto);
+    }
+    &__caption {
+      display: block;
+      padding-bottom: 2rem;
+      font-size: 2.6rem;
+      color: #5146bc;
+      font-weight: 500;
+    }
+    &__caption::first-letter,
+    &__company-name {
+      text-transform: capitalize;
+    }
+    &__company-name {
+    }
+    &__desc {
+      display: inline-block;
+      padding-bottom: 2.5rem;
+      color: #ddd7d7;
+      font-size: 1.8rem;
+    }
+  }
+  .form {
+    &-login {
+    }
+    &__submit {
+      @include size(100%, 5rem);
+      display: block;
+      & span {
+      }
+    }
+  }
+  .item-checkbox {
+    margin-bottom: 1.4rem;
+  }
+  @include max-width(576px) {
+    padding-top: 5rem;
+    .login {
+      width: calc(100% - 2rem);
+      &__company-name {
+        display: block;
+      }
+    }
+  }
+}
+
+#user {
+  padding-top: 1rem;
+  .header {
+    @include flex-box(center, flex-end);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    &-notify {
+      position: relative;
+      margin-right: 2rem;
+    }
+    &-notify__icon {
+      font-size: 2rem;
+    }
+    &-notify__number {
+      @include flex-box(center, center);
+      @include size(1.2rem);
+      position: absolute;
+      top: 0;
+      right: 0;
+      border-radius: 50%;
+      background: red;
+      color: white;
+      transform: translate(5px, -5px);
+    }
+    &-user {
+      position: relative;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    &-user__info {
+      margin-right: 1.6rem;
+      text-align: end;
+    }
+    &-user__name {
+      display: block;
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+    &-use__position {
+      font-size: 1.3rem;
+      font-weight: 500;
+    }
+    &-user__avatar {
+    }
+    &-user__img {
+      @include size(5rem);
+      border-radius: 50%;
+    }
+    &-user:hover .header-action {
+      top: calc(100% + 2rem);
+      opacity: 1;
+      visibility: visible;
+    }
+    &-action {
+      @extend %before-dropdown;
+      position: absolute;
+      right: 0;
+      top: -2rem;
+      min-width: 12rem;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      background: white;
+      font-size: 1.8rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s linear;
+      &__item {
+        display: flex;
+        padding: 1rem 2rem;
+        border-radius: 0.5rem;
+        transition: all 0.2s linear;
+        &:hover {
+          background: $gray-color;
+        }
+      }
+      &__icon {
+        margin-right: 1rem;
+      }
+    }
+  }
+}
+.profile {
+  margin-top: 3rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  &-select {
+    @include flex-box(center, flex-start);
+    margin-bottom: 3rem;
+    font-size: 2rem;
+    &__item {
+      @include flex-box(center, center);
+      @include size(auto, 5rem);
+      margin-right: 1rem;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      border-radius: 1rem;
+      color: $gray-color;
+      text-transform: capitalize;
+      cursor: pointer;
+      &.active {
+        @extend %primary;
+      }
+    }
+    &__icon {
+      margin-right: 1rem;
+    }
+  }
+}
+.profile-account {
+  .account {
+    &__user {
+      @include flex-box(center, flex-start);
+      margin-bottom: 3rem;
+      color: $primary-color;
+    }
+    &__avatar {
+      margin-right: 1rem;
+    }
+    &__img {
+      @include size(8rem, 8rem);
+      border-radius: 0.5rem;
+    }
+    &__name {
+      font-size: 2rem;
+      font-weight: 500;
+      text-transform: capitalize;
+    }
+    &__action {
+      margin-top: 0.6rem;
+    }
+  }
+}
+.profile-account,
+.profile-information {
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  transition: all 0.2s linear;
+  .form {
+    @include flex-box(center, space-between, row, wrap);
+    &__item {
+      width: calc(33% - 1rem);
+    }
+  }
+  &.active {
+    opacity: 1;
+    visibility: visible;
+    height: auto;
+  }
+}
+.profile {
+  .info {
+    margin-bottom: 2rem;
+    padding-left: 2rem;
+    font-size: 2rem;
+  }
+  .info__text {
+    text-transform: capitalize;
+  }
+}
+.info--address{
+  margin-top: 2rem;
+}
